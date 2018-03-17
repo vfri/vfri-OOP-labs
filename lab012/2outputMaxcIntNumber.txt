@@ -1,0 +1,14 @@
+Transform given integer value form one number system to other
+
+Radices of value from 2 to 36. Digits from 10 to 35 are letters form A to Z
+
+mediaResult = 134217727
+mediaResult = 8388607
+mediaResult = 524287
+mediaResult = 32767
+mediaResult = 2047
+mediaResult = 127
+mediaResult = 7
+mediaResult = 0
+2147483647 in radix 10 is 7FFFFFFF
+(in radix 16)
