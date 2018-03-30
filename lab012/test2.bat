@@ -1,72 +1,75 @@
 @echo off
 
+set PROGRAM="%~1"
+
+echo %PROGRAM%
 
 REM запуск программы без параметров
-lab012.exe
+%PROGRAM%
 IF ERRORLEVEL 1 GOTO err
 
 echo.
 
 REM запуск программы с одним параметром
-lab012.exe theOnlyParameter
+%PROGRAM% theOnlyParameter
 IF ERRORLEVEL 1 GOTO err
 
 echo.
 
 REM запуск программы с двумя параметрами
-lab012.exe oneParameter twoParameter
+%PROGRAM% oneParameter twoParameter
 IF ERRORLEVEL 1 GOTO err
 
 echo.
 
 
 REM запуск программы с тремя параметрами, первый не число 
-lab012.exe ab 13 34ret453 > 2outputWrongSource.txt
+%PROGRAM% ab 13 34ret453 > testcases\2outputWrongSource.txt
 IF NOT ERRORLEVEL 1 GOTO err
-FC /B 2outputWrongSource.txt 2wrongSourceResult.txt
+FC /B testcases\2outputWrongSource.txt testcases\2wrongSourceResult.txt
 IF ERRORLEVEL 1 GOTO err
 
 echo.
 
 REM запуск программы с тремя параметрами, первый слишком большой 
-lab012.exe 37 13 34ret453 > 2outputBigSource.txt
+%PROGRAM% 37 13 34ret453 > testcases\2outputBigSource.txt
 IF NOT ERRORLEVEL 1 GOTO err
-FC /B 2outputBigSource.txt 2bigSourceResult.txt
+FC /B testcases\2outputBigSource.txt testcases\2bigSourceResult.txt
 IF ERRORLEVEL 1 GOTO err
 
 echo.
 
 REM запуск программы с тремя параметрами, второй меньше 2 
-lab012.exe 23 1a 34ret453 > 2outputSmallDest.txt
+%PROGRAM% 23 1a 34ret453 > testcases\2outputSmallDest.txt
 IF NOT ERRORLEVEL 1 GOTO err
-FC /B 2outputSmallDest.txt 2smallDestResult.txt
+FC /B testcases\2outputSmallDest.txt testcases\2smallDestResult.txt
 IF ERRORLEVEL 1 GOTO err
 
 echo.
 
 REM запуск программы с тремя параметрами, источник и приемник валидные, строка с 
 REM невалидными символами 
-lab012.exe 13 17 256w3 > 2outputWrongSymb.txt
+%PROGRAM% 13 17 256w3 > testcases\2outputWrongSymb.txt
 IF NOT ERRORLEVEL 1 GOTO err
-FC /B 2outputWrongSymb.txt 2wrongSymbResult.txt
+FC /B testcases\2outputWrongSymb.txt testcases\2wrongSymbResult.txt
 IF ERRORLEVEL 1 GOTO err
 
 echo.
 
 REM запуск программы с тремя параметрами, источник и приемник валидные, строка 
 REM изображает слишком большое число 
-lab012.exe 13 17 100000000000000 > 2outputTooBigNumber.txt
+%PROGRAM% 13 17 100000000000000 > testcases\2outputTooBigNumber.txt
 IF NOT ERRORLEVEL 1 GOTO err
-FC /B 2outputTooBigNumber.txt 2tooBigNumberResult.txt
+FC /B testcases\2outputTooBigNumber.txt testcases\2tooBigNumberResult.txt
 IF ERRORLEVEL 1 GOTO err
 
 echo.
 
 REM запуск программы с тремя параметрами, источник и приемник валидные, строка 
 REM изображает максимальное целое число 
-lab012.exe 10 16 2147483647 > 2outputMaxIntNumber.txt
-IF NOT ERRORLEVEL 1 GOTO err
-FC /B 2outputMaxIntNumber.txt 2maxIntNumberResult.txt
+%PROGRAM% 10 16 2147483647 > testcases\2outputMaxIntNumber.txt
+IF ERRORLEVEL 1 GOTO err
+FC /B testcases\2outputMaxIntNumber.txt testcases\2maxIntNumberResult.txt
 IF ERRORLEVEL 1 GOTO err
 
 echo.
@@ -74,18 +77,18 @@ echo.
 
 REM запуск программы с тремя параметрами, источник и приемник валидные, строка 
 REM изображает минимальное целое число 
-lab012.exe 10 16 -2147483648 > 2outputMinIntNumber.txt
-IF NOT ERRORLEVEL 1 GOTO err
-FC /B 2outputMinIntNumber.txt 2minIntNumberResult.txt
+%PROGRAM% 10 16 -2147483648 > testcases\2outputMinIntNumber.txt
+IF ERRORLEVEL 1 GOTO err
+FC /B testcases\2outputMinIntNumber.txt testcases\2minIntNumberResult.txt
 IF ERRORLEVEL 1 GOTO err
 
 echo.
 
 REM запуск программы с тремя параметрами, источник и приемник валидные, строка 
 REM изображает 0 
-lab012.exe 10 16 0 > 2outputZero.txt
-IF NOT ERRORLEVEL 1 GOTO err
-FC /B 2outputZero.txt 2zeroResult.txt
+%PROGRAM% 10 16 0 > testcases\2outputZero.txt
+IF ERRORLEVEL 1 GOTO err
+FC /B testcases\2outputZero.txt testcases\2zeroResult.txt
 IF ERRORLEVEL 1 GOTO err
 
 echo.
@@ -93,27 +96,27 @@ echo.
 
 REM запуск программы с тремя параметрами, источник и приемник валидные, строка 
 REM изображает число, на 1 больше минимального 
-lab012.exe 10 16 -2147483647 > 2outputAlmostMinNumber.txt
-IF NOT ERRORLEVEL 1 GOTO err
-FC /B 2outputAlmostMinNumber.txt 2almostMinNumberResult.txt
+%PROGRAM% 10 16 -2147483647 > testcases\2outputAlmostMinNumber.txt
+IF ERRORLEVEL 1 GOTO err
+FC /B testcases\2outputAlmostMinNumber.txt testcases\2almostMinNumberResult.txt
 IF ERRORLEVEL 1 GOTO err
 
 echo.
 
 REM запуск программы с тремя параметрами, источник и приемник валидные, строка 
 REM изображает число 2018 
-lab012.exe 10 3 2018 > 2output2018To3.txt
-IF NOT ERRORLEVEL 1 GOTO err
-FC /B 2output2018To3.txt 22018To3Result.txt
+%PROGRAM% 10 3 2018 > testcases\2output2018To3.txt
+IF ERRORLEVEL 1 GOTO err
+FC /B testcases\2output2018To3.txt testcases\22018To3Result.txt
 IF ERRORLEVEL 1 GOTO err
 
 echo.
 
 REM запуск программы с тремя параметрами, источник и приемник валидные, строка 
 REM изображает число 2018 
-lab012.exe 3 10 2202202 > 2output2018From3.txt
-IF NOT ERRORLEVEL 1 GOTO err
-FC /B 2output2018From3.txt 22018From3Result.txt
+%PROGRAM% 3 10 2202202 > testcases\2output2018From3.txt
+IF ERRORLEVEL 1 GOTO err
+FC /B testcases\2output2018From3.txt testcases\22018From3Result.txt
 IF ERRORLEVEL 1 GOTO err
 
 echo.
@@ -121,21 +124,23 @@ echo.
 
 REM запуск программы с тремя параметрами, источник и приемник валидные, строка 
 REM изображает число 10000 в 25ричной системе и переводит в 23ичную 
-lab012.exe 25 23 G00 > 2outputFrom25To23.txt
-IF NOT ERRORLEVEL 1 GOTO err
-FC /B 2outputFrom25To23.txt 2from25To23Result.txt
+%PROGRAM% 25 23 G00 > testcases\2outputFrom25To23.txt
+IF ERRORLEVEL 1 GOTO err
+FC /B testcases\2outputFrom25To23.txt testcases\2from25To23Result.txt
 IF ERRORLEVEL 1 GOTO err
 
 echo.
 
 REM запуск программы с тремя параметрами, источник и приемник валидные, строка 
 REM изображает число 10000 в 25ричной системе и переводит в 23ичную 
-lab012.exe 23 25 IKI > 2outputFrom23To25.txt
-IF NOT ERRORLEVEL 1 GOTO err
-FC /B 2outputFrom23To25.txt 2from23To25Result.txt
+%PROGRAM% 23 25 IKI > testcases\2outputFrom23To25.txt
+IF ERRORLEVEL 1 GOTO err
+FC /B testcases\2outputFrom23To25.txt testcases\2from23To25Result.txt
 IF ERRORLEVEL 1 GOTO err
 
 echo.
+
+%PROGRAM% 2 16 1001001
 
 
 

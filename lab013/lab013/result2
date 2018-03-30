@@ -1,0 +1,10 @@
+Calculates inverse matrix for given 3x3 matrix
+arr3[0,0] =      2.3
+arr3[0,1] =       56
+arr3[0,2] =      101
+arr3[1,0] =       30
+arr3[1,1] =   0.0453
+arr3[1,2] =      384
+arr3[2,0] = 2.88e+03
+arr3[2,1] =     25.3
+arr3[2,2] =       83

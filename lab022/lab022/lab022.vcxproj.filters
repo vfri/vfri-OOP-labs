@@ -26,13 +26,8 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="lab012.cpp">
+    <ClCompile Include="lab022.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="test2.bat">
-      <Filter>Исходные файлы</Filter>
-    </None>
   </ItemGroup>
 </Project>
