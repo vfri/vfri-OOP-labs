@@ -141,6 +141,7 @@ IF ERRORLEVEL 1 GOTO err
 echo.
 
 %PROGRAM% 2 16 1001001
+%PROGRAM% 16 2 ffff
 
 
 

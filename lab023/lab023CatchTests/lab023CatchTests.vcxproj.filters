@@ -21,18 +21,19 @@
     <ClInclude Include="targetver.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="Vocabular.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="lab013.cpp">
+    <ClCompile Include="lab023CatchTests.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="test3.bat">
+    <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
-    </None>
+    </ClCompile>
   </ItemGroup>
 </Project>
