@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "HTMLDecode.h"
+#include "../lab022code/HTMLDecode.h"
 
 static std::map<std::string, char> substSymbol = { { "&quot;", '\"' },    // отображение замены
 													{ "&apos;", '\'' },

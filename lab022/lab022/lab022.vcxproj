@@ -153,8 +153,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\lab022code\lab022code.cpp" />
     <ClCompile Include="HTMLDecodeTest.cpp" />
-    <ClCompile Include="lab022.cpp" />
     <ClCompile Include="main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
