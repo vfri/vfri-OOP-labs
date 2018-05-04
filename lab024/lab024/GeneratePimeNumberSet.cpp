@@ -6,10 +6,10 @@ std::vector<bool> SieveResult(unsigned int bound) // просеивает позиции по метод
 	std::vector<bool> result(bound + 1, 1);
 	result[0] = result[1] = 0;
 
-	unsigned int lastPrime = 2;
+	size_t lastPrime = 2;
 	while (lastPrime * lastPrime <= bound)
 	{
-		for (unsigned int i = lastPrime * lastPrime; i <= bound; i += lastPrime)
+		for (size_t i = lastPrime * lastPrime; i <= bound; i += lastPrime)
 		{
 			result[i] = false;
 		}
@@ -17,22 +17,21 @@ std::vector<bool> SieveResult(unsigned int bound) // просеивает позиции по метод
 		std::vector<bool>::iterator itPrimes = std::find(startFindNextPrime, result.end(), true);
 		lastPrime += std::distance(startFindNextPrime, itPrimes) + 1;
 	}
-	// std::copy(result.begin(), result.end(), std::ostream_iterator<bool>(std::cout, " "));
-	std::cout << std::endl;
 	return result;
 }
 
-std::set<int> GeneratePrimeNumbersSet(unsigned int upperBound, unsigned int& primesAmount)
+std::set<int> GeneratePrimeNumbersSet(unsigned int upperBound)
 {
 	std::vector<bool> primesPositions = SieveResult(upperBound);
-	std::vector<bool>::iterator it = primesPositions.begin();
 	std::set<int> result;
-	primesAmount = 0;
-	while ((it = std::find(++it, primesPositions.end(), true)) != primesPositions.end())
+	int number = 0;
+	for (auto it = primesPositions.begin(); it != primesPositions.end(); ++it)
 	{
-		primesAmount++;
-		result.insert(std::distance(primesPositions.begin(), it));
+		if (*it)
+		{
+			result.insert(result.end(), number);
+		}
+		++number;		
 	}
-	std::cout << primesAmount << " primary numbers up to " << upperBound << " overall" << std::endl;
 	return result;
 }

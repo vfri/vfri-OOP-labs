@@ -4,4 +4,4 @@
 #include <set>
 
 std::vector<bool> SieveResult(unsigned int bound); // позиции простых по решету Эратосфена
-std::set<int> GeneratePrimeNumbersSet(unsigned int upperBound, unsigned int& primesAmount); // множество простых, не больших upperBound
+std::set<int> GeneratePrimeNumbersSet(unsigned int upperBound); // множество простых, не больших upperBound
