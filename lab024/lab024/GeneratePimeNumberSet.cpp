@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "GeneratePrimes.h"
+#include "../lab024/GeneratePrimes.h"
 
 std::vector<bool> SieveResult(unsigned int bound) // просеивает позиции по методу решета Ёратосфена,
 {	// оставл€€ 1 на позици€х простых чисел
@@ -22,17 +22,17 @@ std::vector<bool> SieveResult(unsigned int bound) // просеивает позиции по метод
 	return result;
 }
 
-std::set<int> GeneratePrimeNumbersSet(unsigned int upperBound)
+std::set<int> GeneratePrimeNumbersSet(unsigned int upperBound, unsigned int& primesAmount)
 {
 	std::vector<bool> primesPositions = SieveResult(upperBound);
 	std::vector<bool>::iterator it = primesPositions.begin();
 	std::set<int> result;
-	unsigned int primesNumber = 0;
+	primesAmount = 0;
 	while ((it = std::find(++it, primesPositions.end(), true)) != primesPositions.end())
 	{
-		primesNumber++;
+		primesAmount++;
 		result.insert(std::distance(primesPositions.begin(), it));
 	}
-	std::cout << primesNumber << " primary numbers up to " << upperBound << " overall" << std::endl;
+	std::cout << primesAmount << " primary numbers up to " << upperBound << " overall" << std::endl;
 	return result;
 }

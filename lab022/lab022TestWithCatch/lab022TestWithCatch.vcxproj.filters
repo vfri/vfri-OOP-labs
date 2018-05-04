@@ -29,10 +29,13 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lab022TestWithCatch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Decode.cpp">
+    <ClCompile Include="..\lab022code\Decode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
