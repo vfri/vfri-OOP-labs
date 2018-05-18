@@ -19,7 +19,7 @@ IF ERRORLEVEL 1 GOTO err
 echo.
 
 REM запуск программы с тремя параметрами 
-%PROGRAM% houseJackShort.txt cat dog 
+%PROGRAM% testcases\houseJackShort.txt cat dog > "%TEMP%\output091.txt"
 IF ERRORLEVEL 1 GOTO err
 
 echo.
@@ -27,49 +27,47 @@ echo.
 REM запуск программы с именем несуществующего файла
 %PROGRAM% notExistingFile anyString > "%TEMP%\outputNotExists.txt"
 IF NOT ERRORLEVEL 1 GOTO err
-fc.exe "%TEMP%\outputNotExists.txt" testcases\notExistingFileResult.txt
+FC "%TEMP%\outputNotExists.txt" testcases\notExistingFileResult.txt
 IF ERRORLEVEL 1 GOTO err
-
-echo "not exist"
 
 echo.
 
 REM запуск программы с именем существующего файла и с отсутствующим образцом
-%PROGRAM% houseJackShort.txt hgfedcba > "%TEMP%\outputAbsent.txt"
+%PROGRAM% testcases\houseJackShort.txt hgfedcba > "%TEMP%\outputAbsent.txt"
 IF NOT ERRORLEVEL 1 GOTO err
-FC /B "%TEMP%\outputAbsent.txt" houseShortAbsentResult.txt
+FC "%TEMP%\outputAbsent.txt" testcases\houseShortAbsentResult.txt
 IF ERRORLEVEL 1 GOTO err
 
 echo.
 
 REM запуск программы с именем существующего файла и с присутствующим образцом
-%PROGRAM% houseJackShort.txt dog > "%TEMP%\outputDog.txt""
+%PROGRAM% testcases\houseJackShort.txt dog > "%TEMP%\outputDog.txt"
 IF ERRORLEVEL 1 GOTO err
-FC /B "%TEMP%\outputDog.txt" houseShortDogResult.txt
-IF ERRORLEVEL 1 GOTO err
-
-echo.
-
-REM запуск программы с именем существующего файла и с присутствующим образцом
-%PROGRAM% houseJackShort.txt rat > "%TEMP%\outputRat.txt""
-IF ERRORLEVEL 1 GOTO err
-FC /B "%TEMP%\outputRat.txt" houseShortRatResult.txt
+FC "%TEMP%\outputDog.txt" testcases\houseShortDogResult.txt
 IF ERRORLEVEL 1 GOTO err
 
 echo.
 
 REM запуск программы с именем существующего файла и с присутствующим образцом
-%PROGRAM% houseJackShort.txt at > "%TEMP%\outputAt.txt"
+%PROGRAM% testcases\houseJackShort.txt rat > "%TEMP%\outputRat.txt"
 IF ERRORLEVEL 1 GOTO err
-FC /B "%TEMP%\outputAt.txt" houseShortAtResult.txt
+FC "%TEMP%\outputRat.txt" testcases\houseShortRatResult.txt
 IF ERRORLEVEL 1 GOTO err
 
 echo.
 
 REM запуск программы с именем существующего файла и с присутствующим образцом
-%PROGRAM% houseJackFull.txt Ja > "%TEMP%\outputJaFull.txt"
+%PROGRAM% testcases\houseJackShort.txt at > "%TEMP%\outputAt.txt"
 IF ERRORLEVEL 1 GOTO err
-FC /B "%TEMP%\outputJaFull.txt" houseJackFullJaResult.txt
+FC "%TEMP%\outputAt.txt" testcases\houseShortAtResult.txt
+IF ERRORLEVEL 1 GOTO err
+
+echo.
+
+REM запуск программы с именем существующего файла и с присутствующим образцом
+%PROGRAM% testcases\houseJackFull.txt Ja > "%TEMP%\outputJaFull.txt"
+IF ERRORLEVEL 1 GOTO err
+FC "%TEMP%\outputJaFull.txt" testcases\houseJackFullJaResult.txt
 IF ERRORLEVEL 1 GOTO err
 
 echo.

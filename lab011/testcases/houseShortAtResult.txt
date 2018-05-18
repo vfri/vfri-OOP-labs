@@ -10,4 +10,4 @@ Program is to find inclusions of the given string in given file
 9
 10
 11
-These are numbers of strings in file houseJackShort.txt, there the string "at" is appear.
+These are numbers of strings in file testcases\houseJackShort.txt, there the string "at" is appear.

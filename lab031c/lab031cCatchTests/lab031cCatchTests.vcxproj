@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{94CD0848-C108-4B05-928C-C1DE6D3BB0E4}</ProjectGuid>
+    <ProjectGuid>{3175B650-4D5D-4135-ACBC-BA784EAFC5DE}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>lab023CatchTests</RootNamespace>
+    <RootNamespace>lab031cCatchTests</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -147,13 +147,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\lab023\Dictionary.h" />
+    <ClInclude Include="..\lab031c\CCar.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\lab023\lab023.cpp" />
-    <ClCompile Include="lab023CatchTests.cpp" />
+    <ClCompile Include="..\lab031c\CCar.cpp" />
+    <ClCompile Include="lab031cCatchTests.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
