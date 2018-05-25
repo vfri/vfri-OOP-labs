@@ -4,7 +4,8 @@
 class CTriangle : public ISolidShape 
 {
 	public:
-		CTriangle(const CPoint& vertex1, const CPoint& vertex2, const CPoint& vertex3);
+		CTriangle(double vert1X, double vert1Y, double vert2X, double vert2Y, double vert3X, double vert3Y,
+			const std::string& outlineColor, const std::string& fillColor);
 		double GetArea() const; // площадь образа
 		double GetPerimeter() const; // периметр образа
 		std::string ToString() const; // описание фигуры

@@ -4,7 +4,7 @@
 class CCircle : public ISolidShape
 {
 	public:
-		CCircle(double centerX, double centerY, double radius);
+		CCircle(double centerX, double centerY, double radius, const std::string& outlineColor, const std::string& fillColor);
 		double GetArea() const; // площадь образа
 		double GetPerimeter() const; // периметр образа
 		std::string ToString() const; // описание фигуры

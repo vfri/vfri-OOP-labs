@@ -4,7 +4,7 @@
 class CLineSegment : public IShape
 {
 	public:
-		CLineSegment(const CPoint& startPoint, const CPoint& endPoint);
+		CLineSegment(double startPointX, double startPointY, double endPointX, double endPointY, const std::string& outlineColor);
 		double GetArea() const;
 		double GetPerimeter() const;
 		std::string ToString() const;

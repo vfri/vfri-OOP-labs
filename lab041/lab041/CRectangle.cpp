@@ -2,8 +2,9 @@
 #include "CRectangle.h"
 
 
-CRectangle::CRectangle(double leftTopX, double leftTopY, double width, double height)
-	:ISolidShape("Rectangle", m_outlineColor, m_fillColor)
+CRectangle::CRectangle(double leftTopX, double leftTopY, double width, double height, 
+	const std::string& outlineColor, const std::string& fillColor)
+	:ISolidShape("Rectangle", outlineColor, fillColor)
 	,m_leftTop(CPoint(leftTopX, leftTopY))
 {
 	m_width = (width > 0) ? width : 0.0;

@@ -2,10 +2,10 @@
 #include "CLineSegment.h"
 
 
-CLineSegment::CLineSegment(const CPoint& startPoint, const CPoint& endPoint)
-	:IShape("LineSegment", m_outlineColor)
-	,m_startP(startPoint)
-	,m_endP(endPoint)
+CLineSegment::CLineSegment(double startPointX, double startPointY, double endPointX, double endPointY, const std::string& outlineColor)
+	:IShape("LineSegment", outlineColor)
+	,m_startP(CPoint(startPointX, startPointY))
+	,m_endP(CPoint(endPointX, endPointY))
 {
 }
 

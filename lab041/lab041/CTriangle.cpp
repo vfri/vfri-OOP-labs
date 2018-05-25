@@ -4,11 +4,12 @@
 
 
 
-CTriangle::CTriangle(const CPoint& vertex1, const CPoint& vertex2, const CPoint& vertex3)
-	:ISolidShape("Triangle", m_outlineColor, m_fillColor)
-	,m_vert1(vertex1)
-	,m_vert2(vertex2)
-	,m_vert3(vertex3)
+CTriangle::CTriangle(double vert1X, double vert1Y, double vert2X, double vert2Y, double vert3X, double vert3Y,
+	const std::string& outlineColor, const std::string& fillColor)
+	:ISolidShape("Triangle", outlineColor, fillColor)
+	,m_vert1(CPoint(vert1X, vert1Y))
+	,m_vert2(CPoint(vert2X, vert2Y))
+	,m_vert3(CPoint(vert3X, vert3Y))
 {
 }
 
@@ -39,7 +40,7 @@ std::string CTriangle::GetFillcolor() const
 
 double CTriangle::GetPerimeter() const
 {
-	CLineSegment side1(m_vert1, m_vert2);
+	CLineSegment side1(m_vert1.GetX(), m_vert1.GetY(), m_vert2.GetX(), m_vertY.GetY());
 	CLineSegment side2(m_vert2, m_vert3);
 	CLineSegment side3(m_vert3, m_vert1);
 

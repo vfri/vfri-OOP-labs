@@ -4,7 +4,8 @@
 class CRectangle : 	public ISolidShape
 {
 	public:
-		CRectangle(double leftTopX, double leftTopY, double width, double height);
+		CRectangle(double leftTopX, double leftTopY, double width, double height, 
+			const std::string& outlineColor, const std::string& fillColor);
 		double GetArea() const; // площадь образа
 		double GetPerimeter() const; // периметр образа
 		std::string ToString() const; // описание фигуры

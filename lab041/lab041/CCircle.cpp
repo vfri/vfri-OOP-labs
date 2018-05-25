@@ -2,8 +2,8 @@
 #include "CCircle.h"
 
 
-CCircle::CCircle(double centerX, double centerY, double radius)
-	:ISolidShape("Circle", m_outlineColor, m_fillColor)
+CCircle::CCircle(double centerX, double centerY, double radius, const std::string& outlineColor, const std::string& fillColor)
+	:ISolidShape("Circle", outlineColor, fillColor)
 	,m_center(CPoint(centerX, centerY))
 {
 	m_radius = (radius > 0) ? radius : 0.0;
