@@ -2,9 +2,63 @@
 #include "CLineSegment.h"
 
 
-CLineSegment::CLineSegment()
+CLineSegment::CLineSegment(const CPoint& startPoint, const CPoint& endPoint)
+	:IShape("LineSegment", m_outlineColor)
+	,m_startP(startPoint)
+	,m_endP(endPoint)
 {
 }
 
+CPoint CLineSegment::GetStartPoint() const
+{
+	return m_startP;
+}
 
+CPoint CLineSegment::GetEndPoint() const
+{
+	return m_endP;
+}
 
+std::string CLineSegment::GetOutlineColor() const
+{
+	return m_outlineColor;
+}
+
+double CLineSegment::GetArea() const
+{
+	return 0.0;
+}
+
+double CLineSegment::GetPerimeter() const
+{
+	double x1 = m_startP.GetX();
+	double y1 = m_startP.GetY();
+	double x2 = m_endP.GetX();
+	double y2 = m_endP.GetY();
+
+	return pow( pow(x1 - x2, 2) + pow(y1 - y2, 2), 0.5);
+}
+
+std::string CLineSegment::ToString() const
+{
+	IShape::ToString();
+	std::ostringstream strm;
+	AppendProperties(strm);
+	
+	return strm.str();
+}
+
+void CLineSegment::AppendProperties(std::ostream& ostrm) const
+{
+	ostrm << "\tEndpoint 1 is (" << m_startP.GetX() << ", " << m_startP.GetY() << ")" << std::endl
+		<< "\tEndpoint 2 is (" << m_endP.GetX() << ", " << m_endP.GetY() << ")" << std::endl
+		<< "\tPerimeter =  " << GetPerimeter() << std::endl
+		<< "\tArea = " << GetArea() << std::endl;
+}
+
+CPoint CLineSegment::GetRadVector() const
+{
+	double xRad = m_endP.GetX() - m_startP.GetX();
+	double yRad = m_endP.GetY() - m_startP.GetY();
+	return CPoint(xRad, yRad);
+}
