@@ -73,6 +73,8 @@ public:
 	int GetGearNum() const; 
 
 	int GetSpeedValue() const;
+
+	std::string GetErrorMessage() const;
 	
 	bool TurnOnEngine();  
 
@@ -82,7 +84,7 @@ public:
 
 	bool SetSpeed(int speed); 
 
-	void TellAboutError(int arg); 
+	
 
 private:
 
@@ -93,6 +95,5 @@ private:
 	CGearKit m_gearKit; // скоростной режим на передачах min и max скорость на передаче от -1 до наивысшей)
 	int m_speed; // скорость
 	int m_gear;  // передача (реверс -1, нейтраль 0, движение вперед 1..n)
-	Direction SetDirection();
 };
 

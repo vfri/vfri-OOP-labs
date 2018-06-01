@@ -101,6 +101,13 @@ CRational& CRational::operator-=(CRational subtrahend)
 	return (*this).Normalize();
 }
 
+CRational& CRational::operator*=(CRational multiplier)
+{
+	m_numerator *= multiplier.m_numerator;
+	m_denominator *= multiplier.m_denominator;
+	return (*this).Normalize();
+}
+
 
 std::string CRational::GetErrorMessage() const
 {
@@ -111,4 +118,55 @@ CRational operator+(CRational summand1, CRational summand2)
 {
 	CRational result = summand1;
 	return result += summand2;
+}
+
+CRational operator-(CRational minuend, CRational subtrahend)
+{
+	CRational result = minuend;
+	return result -= subtrahend;
+}
+
+CRational operator*(CRational multiplier1, CRational multiplier2)
+{
+	CRational result = multiplier1;
+	return result *= multiplier2;
+}
+
+bool operator==(CRational left, CRational right)
+{
+	if ((left.GetDenominator() == 0) || (right.GetDenominator() == 0))
+	{
+		return false;
+	}
+	else
+	{
+		CRational difference = left - right;
+		return (difference.GetNumerator() == 0);
+	}
+}
+
+bool operator!=(CRational left, CRational right)
+{
+	return !(left == right);
+}
+
+bool operator>(CRational left, CRational right)
+{
+	CRational difference = left - right;
+	return (difference.GetNumerator() > 0);
+}
+
+bool operator<(CRational left, CRational right)
+{
+	return (right > left);
+}
+
+bool operator>=(CRational left, CRational right)
+{
+	return ((left > right) || (left == right));
+}
+
+bool operator<=(CRational left, CRational right)
+{
+	return ((left < right) || (left == right));
 }

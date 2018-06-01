@@ -134,8 +134,7 @@ CDiapazon CGearKit::GetForwardDiapazon(const int gear) const
 
 bool CGearKit::GearNotExists(const int gear) const
 {
-	CDiapazon gears(-1, m_forwardNumber);
-	return (!gears.Contains(gear));
+	return ((gear < -1) || (gear > m_forwardNumber));
 }
 
 bool CGearKit::TooFast(const int gear, const int velocity) const
@@ -225,14 +224,37 @@ int CCar::GetSpeedValue() const
 	return m_speed;
 }
 
+std::string CCar::GetErrorMessage() const
+{
+	return m_errorMess;
+}
+
 bool CCar::TurnOnEngine()  // включить двигатель; если двигатель включен, возвращает false 
 {
-	return (!m_engineOn) ? (m_engineOn = true) : false;
+	m_errorMess.clear();
+	if (m_engineOn)
+	{
+		m_errorMess = std::string("Engine is already works!");
+		return false;
+	}
+	else
+	{
+		return (m_engineOn = true);
+	}
 }
 
 bool CCar::TurnOffEngine() // выключить двигатель; если двигатель нельзя выключить 
 {	// (выключен, или передача не нейтральная, или скорость не нулевая), то возвращает false
-	return (m_engineOn && (m_gear == 0) && (m_speed == 0)) ? !(m_engineOn = false) : false;
+	m_errorMess.clear();
+	if (!(m_engineOn && (m_gear == 0) && (m_speed == 0)))
+	{
+		m_errorMess = std::string("You can turn engine off only if engine turned on and gear set neutral and car not moving");
+		return false;
+	}
+	else
+	{
+		return !(m_engineOn = false);
+	}
 }
 
 
@@ -240,6 +262,7 @@ bool CCar::TurnOffEngine() // выключить двигатель; если двигатель нельзя выключи
 bool CCar::SetGear(int gear) // включить данную передачу
 {
 	m_errorMess.clear();
+
 	if (m_gear == gear)
 	{
 		return true;
@@ -287,67 +310,53 @@ bool CCar::SetGear(int gear) // включить данную передачу
 	return true;
 }
 
-Direction CCar::SetDirection()
+Direction SetDirection(const int gear, const int speed)
 {
-	Direction dir;
-	if (m_speed == 0)
+	Direction dir = Direction::Stop;
+	if ((speed != 0) && (gear != 0))
 	{
-		dir = Direction::Stop;
-	}
-	else
-	{
-		if (m_gear != 0)
-		{
-			dir = (m_gear == -1) ? Direction::Backward : Direction::Forward;
-		}
+		dir = (gear == -1) ? Direction::Backward : Direction::Forward;
 	}
 	return dir;
 }
 
 bool CCar::SetSpeed(int speed) // добиться данной скорости
 {
+	m_errorMess.clear();
+
 	if (speed < 0)
 	{
 		m_errorMess = std::string("Speed must be nonnegative!");
 		return false;
 	}
-	if (m_gear == 0)
+	if ((m_gear == 0) && (speed > m_speed))
 	{
-		if (speed > m_speed)
-		{
-			m_errorMess = std::string("To increase the speed use nonneutral gear!");
-			return false;
-		}
-		else
-		{
-			m_speed = speed;
-			return true;
-		}
+		m_errorMess = std::string("To increase the speed use nonneutral gear!");
+		return false;
 	}
 	if ((m_direction == Direction::Backward) && (m_gearKit.TooFast(-1, speed)))
 	{
 		m_speed = m_gearKit.GetReverseDiapazon().GetUpper();
 		m_errorMess = std::string("Too high speed for moving on reverse gear. Speed achieved is ") +
 			std::to_string(m_speed);
-		return true;
+		return false;
 	}
 	if (m_gearKit.TooFast(m_gear, speed))
 	{
 		m_speed = m_gearKit.GetForwardDiapazon(m_gear).GetUpper();
 		m_errorMess = std::string("Too high speed for moving on ") + std::to_string(m_gear) +
 			std::string(" gear. Speed achieved is ") + std::to_string(m_speed);
-		return true;
+		return false;
 	}
 	if (m_gearKit.TooSlow(m_gear, speed))
 	{
 		m_speed = m_gearKit.GetForwardDiapazon(m_gear).GetLower();
 		m_errorMess = std::string("Too low speed for moving on ") + std::to_string(m_gear) +
 			std::string(" gear. Speed achieved is ") + std::to_string(m_speed);
-		return true;
+		return false;
 	}
-	
 	m_speed = speed;
-	m_direction = SetDirection();
+	m_direction = SetDirection(m_gear, m_speed);
 
 	return true;
 }
