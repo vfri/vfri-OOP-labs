@@ -7,65 +7,198 @@ const std::vector<std::vector<int>> AnAutomobileKit =
 const std::vector<std::vector<int>> OldMoskvichKit =
 { { 0, 20 },{ 0, 100 },{ 0, 30 },{ 20, 60 },{ 40, 100 } };
 
+// класс диапазон
+
+CDiapazon::CDiapazon()
+	:m_lower(0)
+	,m_upper(0)
+{
+}
+
+CDiapazon::CDiapazon(int upper)
+{
+	m_lower = 0;
+	m_upper = std::abs(upper);
+}
+
+CDiapazon::CDiapazon(int lower, int upper)
+{
+	m_lower = std::min(std::abs(lower), std::abs(upper));
+	m_upper = std::max(std::abs(lower), std::abs(upper));
+}
+
+CDiapazon::CDiapazon(const CDiapazon& diap)
+{
+	m_lower = diap.m_lower;
+	m_upper = diap.m_upper;
+}
+
+
+int CDiapazon::GetUpper() const
+{
+	return m_upper;
+}
+
+int CDiapazon::GetLower() const
+{
+	return m_lower;
+}
+
+
+bool CDiapazon::Below(int value) const
+{
+	return (value > m_upper);
+}
+
+
+bool CDiapazon::Over(int value) const
+{
+	return (value < m_lower);
+}
+
+bool CDiapazon::Contains(int value) const
+{
+	return (!Below(value) && !Over(value));
+}
+
+// класс коробка передач
+
+CGearKit::CGearKit()
+	:m_forwardNumber(5)
+	,m_reverseDiap(CDiapazon::CDiapazon(0, 20))
+	,m_neutralDiap(CDiapazon::CDiapazon(0, 150))
+{
+	m_forwardDiap.clear();
+	m_forwardDiap.push_back(CDiapazon::CDiapazon(0, 30));
+	m_forwardDiap.push_back(CDiapazon::CDiapazon(20, 50));
+	m_forwardDiap.push_back(CDiapazon::CDiapazon(30, 60));
+	m_forwardDiap.push_back(CDiapazon::CDiapazon(40, 90));
+	m_forwardDiap.push_back(CDiapazon::CDiapazon(50, 150));
+}
+
+CGearKit::CGearKit(const CGearKit& givenKit)
+{
+	m_forwardNumber = givenKit.m_forwardNumber;
+	CDiapazon m_reverseDiap(givenKit.m_reverseDiap);
+	CDiapazon m_neutralDiap(givenKit.m_neutralDiap);
+	for (size_t i = 0; i < m_forwardNumber; ++i)
+	{
+		m_forwardDiap.push_back(givenKit.m_forwardDiap[i]);
+	}
+}
+
+
+CGearKit::CGearKit(const CDiapazon& revDiap, const int forNumber, const std::vector<CDiapazon>& forDiap)
+{ // 
+	m_forwardNumber = forNumber;
+	CDiapazon m_reverseDiap(revDiap);
+	bool validKit = true;
+	for (size_t i = 0; i < forNumber - 1; ++i)
+	{
+		if (forDiap[i].Contains(forDiap[i + 1].GetLower()) && forDiap[i + 1].Contains(forDiap[i].GetUpper()))
+		{
+			m_forwardDiap.push_back(forDiap[i]);
+		}
+		else
+		{
+			validKit = false;
+			break;
+		}
+	}
+	if (validKit)
+	{
+		m_forwardDiap.push_back(forDiap[forNumber - 1]);
+		CDiapazon m_neutralDiap(0, std::max(forDiap[forNumber - 1].GetUpper(), revDiap.GetUpper()));
+	}
+	else
+	{
+		CGearKit();
+	}
+}
+
+int CGearKit::GetForwardNumber() const
+{
+	return m_forwardNumber;
+}
+
+CDiapazon CGearKit::GetReverseDiapazon() const
+{
+	return m_reverseDiap;
+}
+
+CDiapazon CGearKit::GetForwardDiapazon(const int gear) const
+{
+	return m_forwardDiap[gear - 1];
+}
+
+
+bool CGearKit::GearNotExists(const int gear) const
+{
+	CDiapazon gears(-1, m_forwardNumber);
+	return (!gears.Contains(gear));
+}
+
+bool CGearKit::TooFast(const int gear, const int velocity) const
+{
+	if (gear == -1)
+	{
+		return m_reverseDiap.Below(velocity);
+	}
+	else if (gear > 0)
+	{
+		return m_forwardDiap[gear - 1].Below(velocity);
+	}
+	return false;
+}
+
+bool CGearKit::TooSlow(const int gear, const int velocity) const
+{
+	if (gear > 0)
+	{
+			return m_forwardDiap[gear - 1].Over(velocity);
+	}
+	return false;
+}
+
+bool CGearKit::AppropVelocity(const int gear, const int velocity) const
+{
+	if (gear == -1)
+	{
+		return m_reverseDiap.Contains(velocity);
+	}
+	else if (gear > 0)
+	{
+		return m_forwardDiap[gear - 1].Contains(velocity);
+	}
+	return false;
+}
+
+
+
+// класс CCar
+
 CCar::CCar()
 	:m_engineOn(false)
 	,m_direction(Direction::Stop)
-	,m_error(DriveError::NoError)
-	,m_gearKit(AnAutomobileKit)
+	,m_errorMess(std::string(""))
+	,m_gearKit(CGearKit())
 	,m_gear(0)
 	,m_speed(0)
 {
 }
 
-CCar::CCar(const std::vector<std::vector<int>>& gearKit) 
+CCar::CCar(const CGearKit& gearKit) 
 {
 	m_engineOn = false;
 	m_direction = Direction::Stop;
-	m_error = DriveError::NoError;
+	m_errorMess = std::string("");
 	m_gear = 0;
 	m_speed = 0;
-	std::vector<std::vector<int>> probKit;
-	bool valid = true;
-	for (size_t i = 0; i < gearKit.size(); ++i)
-	{
-		if (i <= 2)
-		{
-			probKit[i][0] = 0;
-		}
-		if (gearKit[i].size() != 2)
-		{
-			valid = false;
-			break;
-		}
-		else if ((gearKit[i][0] < 0) || (gearKit[i][0] >= gearKit[i][1]))
-		{
-			valid = false;
-			break;
-		}
-		else if ((i > 2) && ((gearKit[i][0] <= gearKit[i - 1][0]) || (gearKit[i][1] <= gearKit[i - 1][1])))
-		{
-			valid = false;
-			break;
-		}
-		else
-		{
-			probKit[i][0] = gearKit[i][0];
-			probKit[i][1] = gearKit[i][1];
-		}
-	}
-	if (valid) // данный набор скоростей пригоден в качестве параметров КПП
-	{
-		probKit[1][1] = probKit[gearKit.size() - 1][1];
-		m_gearKit = probKit;
-	}
-	else
-	{
-		m_gearKit = AnAutomobileKit;
-	}
+	CGearKit m_gearKit(gearKit);
 }
 
 
-std::vector<std::vector<int>> CCar::GetGearKit()
+CGearKit CCar::GetGearKit() const
 {
 	return m_gearKit;
 }
@@ -102,92 +235,50 @@ bool CCar::TurnOffEngine() // выключить двигатель; если двигатель нельзя выключи
 	return (m_engineOn && (m_gear == 0) && (m_speed == 0)) ? !(m_engineOn = false) : false;
 }
 
-void CCar::TellAboutError(int arg)
-{
-	switch (m_error)
-	{
-	case DriveError::GearOutOfRange:
-		std::cout << "There only gear modes from -1 to " << m_gearKit.size() - 2 << 
-			" are available!" << std::endl;
-		break;
-	case DriveError::TurningOnPresentGear:
-		std::cout << "Such the gear is already setted!" << std::endl;
-		break;
-	case DriveError::GearOnStanding:
-		std::cout << "You can use only neutral gear then engine is off!" << std::endl;
-		break;
-	case DriveError::UnpossibleReverse:
-		std::cout << "You must stop before use reverse gear!" << std::endl;
-		break;
-	case DriveError::IllGearOnBackwardMoving:
-		std::cout << "The car is moving backward. Do stop before use such the gear!" << std::endl; 
-		break;
-	case DriveError::TooSlowForNewGear:
-		std::cout << "Too low speed for moving on " << arg << " gear!" << std::endl;
-		break;
-	case DriveError::TooFastForNewGear:
-		std::cout << "Too high speed for moving on " << arg << " gear!" << std::endl;
-		break;
-	case DriveError::NegativeSpeed:
-		std::cout << "Speed must be nonnegative!" << std::endl;
-		break;
-	case DriveError::AccelerOnNeutralAttempt:
-		std::cout << "To increase the speed use nonneutral gear!" << std::endl;
-		break;
-	case DriveError::TooSlowForPresentGear:
-		std::cout << "Too high speed for moving on " << m_gear << " gear. Speed achieved is " << m_gearKit[m_gear + 1][1] << std::endl;
-		break;
-	case DriveError::TooFastForPresentGear:
-		std::cout << "Too low speed for moving on " << m_gear << " gear. Speed achieved is " << m_gearKit[m_gear + 1][0] << std::endl;
-		break;
-	}
-}
+
 
 bool CCar::SetGear(int gear) // включить данную передачу
 {
-	if (!(gear + 2 > 0) || !(gear  +  1 < m_gearKit.size()))
+	m_errorMess.clear();
+	if (m_gear == gear)
 	{
-		m_error = DriveError::GearOutOfRange;
+		return true;
+	}
+	if (m_gearKit.GearNotExists(gear))
+	{
+		m_errorMess = std::string("There only gear modes from -1 to ") + 
+			std::to_string(m_gearKit.GetForwardNumber()) + std::string(" are available!");
 		return false;
 	}
-	if (gear == m_gear)
+	if (!m_engineOn && (gear != 0))
 	{
-		m_error = DriveError::TurningOnPresentGear;
+		m_errorMess = std::string("You can use only neutral gear then engine is off!");
 		return false;
 	}
-	if (!m_engineOn)
+	if (m_engineOn)
 	{
-		if (gear != 0)
+		if ((gear == -1) && ( m_direction != Direction::Stop))
 		{
-			m_error = DriveError::GearOnStanding;
+			m_errorMess = std::string("You must stop before use reverse gear!");
 			return false;
-		}
-	}
-	else
-	{
-		if (gear == -1)
-		{
-			if (m_direction != Direction::Stop)
-			{
-				m_error = DriveError::UnpossibleReverse;
-				return false;
-			}
 		}
 		if (gear > 0)
 		{
 			if (m_direction == Direction::Backward)
 			{
-				m_error = DriveError::IllGearOnBackwardMoving;
+				m_errorMess = std::string("The car is moving backward. Do stop before use such the gear!");
 				return false;
 			}
-			if (m_speed < m_gearKit[gear + 1][0]) 
+			if (m_gearKit.GetForwardDiapazon(gear).Over(m_speed)) 
 			{
-				m_error = DriveError::TooSlowForNewGear;
+				m_errorMess = std::string("Too low speed for moving on ") + 
+					std::to_string(gear) + std::string(" gear!");
 				return false;
 			}
-			if (m_speed > m_gearKit[gear + 1][1])
+			if (m_gearKit.GetForwardDiapazon(gear).Below(m_speed))
 			{
-				m_error = DriveError::TooFastForNewGear;
+				m_errorMess = std::string("Too high speed for moving on ") +
+					std::to_string(gear) + std::string(" gear!");
 				return false;
 			}
 		}
@@ -196,46 +287,66 @@ bool CCar::SetGear(int gear) // включить данную передачу
 	return true;
 }
 
-bool CCar::SetSpeed(int speed) // добиться данной скорости
+Direction CCar::SetDirection()
 {
-	if (speed < 0)
-	{
-		m_error = DriveError::NegativeSpeed;
-		return false;
-	}
-	if ((m_direction == Direction::Backward) && (speed > m_gearKit[0][1]))
-	{
-		m_error = DriveError::TooFastForPresentGear;
-		return false;
-	}
-	if ((m_gear == 0) && (speed > m_speed))
-	{
-		m_error = DriveError::AccelerOnNeutralAttempt;
-		return false;
-	}
-	if (speed > m_gearKit[m_gear + 1][1])
-	{
-		m_error = DriveError::TooFastForPresentGear;
-		m_speed = m_gearKit[m_gear + 1][1];
-		return true;
-	}
-	if (speed < m_gearKit[m_gear + 1][0])
-	{
-		m_error = DriveError::TooSlowForPresentGear;
-		m_speed = m_gearKit[m_gear + 1][0];
-		return true;
-	}
-	m_speed = speed;
+	Direction dir;
 	if (m_speed == 0)
 	{
-		m_direction = Direction::Stop;
+		dir = Direction::Stop;
 	}
 	else
 	{
 		if (m_gear != 0)
 		{
-			m_direction = (m_gear == -1) ? Direction::Backward : Direction::Forward;
+			dir = (m_gear == -1) ? Direction::Backward : Direction::Forward;
 		}
 	}
+}
+
+bool CCar::SetSpeed(int speed) // добиться данной скорости
+{
+	if (speed < 0)
+	{
+		m_errorMess = std::string("Speed must be nonnegative!");
+		return false;
+	}
+	if (m_gear == 0)
+	{
+		if (speed > m_speed)
+		{
+			m_errorMess = std::string("To increase the speed use nonneutral gear!");
+			return false;
+		}
+		else
+		{
+			m_speed = speed;
+			return true;
+		}
+	}
+	if ((m_direction == Direction::Backward) && (m_gearKit.GetReverseDiapazon().Below(speed)))
+	{
+		m_speed = m_gearKit.GetReverseDiapazon().GetUpper();
+		m_errorMess = std::string("Too high speed for moving on reverse gear. Speed achieved is ") +
+			std::to_string(m_speed);
+		return true;
+	}
+	if (m_gearKit.GetForwardDiapazon(m_gear).Below(speed))
+	{
+		m_speed = m_gearKit.GetForwardDiapazon(m_gear).GetUpper();
+		m_errorMess = std::string("Too high speed for moving on ") + std::to_string(m_gear) +
+			std::string(" gear. Speed achieved is ") + std::to_string(m_speed);
+		return true;
+	}
+	if (m_gearKit.GetForwardDiapazon(m_gear).Over(speed))
+	{
+		m_speed = m_gearKit.GetForwardDiapazon(m_gear).GetLower();
+		m_errorMess = std::string("Too low speed for moving on ") + std::to_string(m_gear) +
+			std::string(" gear. Speed achieved is ") + std::to_string(m_speed);
+		return true;
+	}
+	
+	m_speed = speed;
+	m_direction = SetDirection();
+
 	return true;
 }
