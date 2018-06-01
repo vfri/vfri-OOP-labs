@@ -269,13 +269,13 @@ bool CCar::SetGear(int gear) // включить данную передачу
 				m_errorMess = std::string("The car is moving backward. Do stop before use such the gear!");
 				return false;
 			}
-			if (m_gearKit.GetForwardDiapazon(gear).Over(m_speed)) 
+			if (m_gearKit.TooSlow(gear, m_speed)) 
 			{
 				m_errorMess = std::string("Too low speed for moving on ") + 
 					std::to_string(gear) + std::string(" gear!");
 				return false;
 			}
-			if (m_gearKit.GetForwardDiapazon(gear).Below(m_speed))
+			if (m_gearKit.TooFast(gear, m_speed))
 			{
 				m_errorMess = std::string("Too high speed for moving on ") +
 					std::to_string(gear) + std::string(" gear!");
@@ -301,6 +301,7 @@ Direction CCar::SetDirection()
 			dir = (m_gear == -1) ? Direction::Backward : Direction::Forward;
 		}
 	}
+	return dir;
 }
 
 bool CCar::SetSpeed(int speed) // добиться данной скорости
@@ -323,21 +324,21 @@ bool CCar::SetSpeed(int speed) // добиться данной скорости
 			return true;
 		}
 	}
-	if ((m_direction == Direction::Backward) && (m_gearKit.GetReverseDiapazon().Below(speed)))
+	if ((m_direction == Direction::Backward) && (m_gearKit.TooFast(-1, speed)))
 	{
 		m_speed = m_gearKit.GetReverseDiapazon().GetUpper();
 		m_errorMess = std::string("Too high speed for moving on reverse gear. Speed achieved is ") +
 			std::to_string(m_speed);
 		return true;
 	}
-	if (m_gearKit.GetForwardDiapazon(m_gear).Below(speed))
+	if (m_gearKit.TooFast(m_gear, speed))
 	{
 		m_speed = m_gearKit.GetForwardDiapazon(m_gear).GetUpper();
 		m_errorMess = std::string("Too high speed for moving on ") + std::to_string(m_gear) +
 			std::string(" gear. Speed achieved is ") + std::to_string(m_speed);
 		return true;
 	}
-	if (m_gearKit.GetForwardDiapazon(m_gear).Over(speed))
+	if (m_gearKit.TooSlow(m_gear, speed))
 	{
 		m_speed = m_gearKit.GetForwardDiapazon(m_gear).GetLower();
 		m_errorMess = std::string("Too low speed for moving on ") + std::to_string(m_gear) +
