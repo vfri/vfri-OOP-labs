@@ -42,7 +42,7 @@ CRational::CRational(int numerator, int denominator)
 		m_denominator = 1;
 		m_errorMess = "Zero denominator. Ratio is set to 0/1";
 	}
-	int factor = GCommDiv(std::abs(m_numerator), std::abs(m_denominator));
+	int factor = std::gcd(std::abs(m_numerator), std::abs(m_denominator));
 	m_numerator /= factor;
 	m_denominator /= factor;
 }
@@ -69,43 +69,42 @@ CRational& CRational::Normalize()
 	}
 	else
 	{
-		int gcdNumDenom = GCommDiv(std::abs(m_numerator), std::abs(m_denominator));
+		int gcdNumDenom = std::gcd(std::abs(m_numerator), std::abs(m_denominator));
 		m_numerator /= gcdNumDenom;
 		m_denominator /= gcdNumDenom;
 	}
 	return *this;
 }
 
-CRational& CRational::operator+()
+CRational CRational::operator+(const CRational& ratio)
 {
-	return *this;
+	return ratio;
 }
 
-CRational& CRational::operator-()
+CRational CRational::operator-(const CRational& ratio)
 {
-	m_numerator = -m_numerator;
-	return *this;
+	return CRational(- ratio.GetNumerator(), ratio.*this;
 }
 
 CRational& CRational::operator+=(CRational summand)
 {
 	m_numerator = m_numerator * summand.m_denominator + m_denominator * summand.m_numerator;
 	m_denominator = m_denominator * summand.m_denominator;
-	return (*this).Normalize();
+	return Normalize();
 }
 
 CRational& CRational::operator-=(CRational subtrahend)
 {
 	m_numerator = m_numerator * subtrahend.m_denominator - m_denominator * subtrahend.m_numerator;
 	m_denominator = m_denominator * subtrahend.m_denominator;
-	return (*this).Normalize();
+	return Normalize();
 }
 
 CRational& CRational::operator*=(CRational multiplier)
 {
 	m_numerator *= multiplier.m_numerator;
 	m_denominator *= multiplier.m_denominator;
-	return (*this).Normalize();
+	return Normalize();
 }
 
 
@@ -116,33 +115,22 @@ std::string CRational::GetErrorMessage() const
 
 CRational operator+(CRational summand1, CRational summand2)
 {
-	CRational result = summand1;
-	return result += summand2;
+	return summand1 += summand2;
 }
 
 CRational operator-(CRational minuend, CRational subtrahend)
 {
-	CRational result = minuend;
-	return result -= subtrahend;
+	return minuend -= subtrahend;
 }
 
 CRational operator*(CRational multiplier1, CRational multiplier2)
 {
-	CRational result = multiplier1;
-	return result *= multiplier2;
+	return multiplier1 *= multiplier2;
 }
 
 bool operator==(CRational left, CRational right)
 {
-	if ((left.GetDenominator() == 0) || (right.GetDenominator() == 0))
-	{
-		return false;
-	}
-	else
-	{
-		CRational difference = left - right;
-		return (difference.GetNumerator() == 0);
-	}
+	return ((left.GetNumerator() == right.GetNumerator()) && (left.GetDenominator() == right.GetDenominator()));
 }
 
 bool operator!=(CRational left, CRational right)
@@ -152,8 +140,7 @@ bool operator!=(CRational left, CRational right)
 
 bool operator>(CRational left, CRational right)
 {
-	CRational difference = left - right;
-	return (difference.GetNumerator() > 0);
+	return (left.GetNumerator() * right.GetDenominator() > left.GetDenominator() * right.GetDenominator());
 }
 
 bool operator<(CRational left, CRational right)
@@ -163,10 +150,10 @@ bool operator<(CRational left, CRational right)
 
 bool operator>=(CRational left, CRational right)
 {
-	return ((left > right) || (left == right));
+	return !(right > left);
 }
 
 bool operator<=(CRational left, CRational right)
 {
-	return ((left < right) || (left == right));
+	return !(left > right);
 }
