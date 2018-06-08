@@ -69,7 +69,7 @@ std::string CRectangle::ToString() const
 		<< "\tLeft top vertex is (" << m_leftTop.GetX() << ", " << m_leftTop.GetY() << ")" << std::endl
 		<< "\twidth is " << m_width << std::endl
 		<< "\theight is " << m_height << std::endl
-		<< "\tPerimeter =  " << GetPerimeter() << std::endl
+		<< "\tPerimeter = " << GetPerimeter() << std::endl
 		<< "\tArea = " << GetArea() << std::endl;
 
 	return strm.str();

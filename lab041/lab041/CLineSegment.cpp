@@ -48,7 +48,7 @@ std::string CLineSegment::ToString() const
 		<< "\tColor is " << m_outlineColor << std::endl
 		<< "\tEndpoint 1 is (" << m_startP.GetX() << ", " << m_startP.GetY() << ")" << std::endl
 		<< "\tEndpoint 2 is (" << m_endP.GetX() << ", " << m_endP.GetY() << ")" << std::endl
-		<< "\tPerimeter =  " << GetPerimeter() << std::endl
+		<< "\tPerimeter = " << GetPerimeter() << std::endl
 		<< "\tArea = " << GetArea() << std::endl;
 	
 	return strm.str();

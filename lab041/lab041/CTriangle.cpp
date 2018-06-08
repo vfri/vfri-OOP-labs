@@ -69,7 +69,7 @@ std::string CTriangle::ToString() const
 		<< "\tVertex 1 is (" << m_vert1.GetX() << ", " << m_vert1.GetY() << ")" << std::endl
 		<< "\tVertex 2 is (" << m_vert2.GetX() << ", " << m_vert2.GetY() << ")" << std::endl
 		<< "\tVertex 3 is (" << m_vert3.GetX() << ", " << m_vert3.GetY() << ")" << std::endl
-		<< "\tPerimeter =  " << GetPerimeter() << std::endl
+		<< "\tPerimeter = " << GetPerimeter() << std::endl
 		<< "\tArea = " << GetArea() << std::endl;
 	
 	return strm.str();

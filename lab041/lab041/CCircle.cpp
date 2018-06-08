@@ -53,7 +53,7 @@ std::string CCircle::ToString() const
 		<< "\tFill color is " << m_fillColor << std::endl
 		<< "\tcenter is at point (" << m_center.GetX() << ", " << m_center.GetY() << ")" << std::endl
 		<< "\tradius is " << m_radius << std::endl
-		<< "\tPerimeter =  " << GetPerimeter() << std::endl
+		<< "\tPerimeter = " << GetPerimeter() << std::endl
 		<< "\tArea = " << GetArea() << std::endl;
 	
 	return strm.str();

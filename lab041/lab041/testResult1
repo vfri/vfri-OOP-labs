@@ -1,0 +1,23 @@
+One more shape!
+One more shape!
+One more shape!
+One more shape!
+Figure of maximal area:
+	Shape type is Circle
+	Outline color is 00ff00
+	Fill color is ff0000
+	center is at point (100, 20)
+	radius is 50
+	Perimeter = 314.159
+	Area = 7853.98
+
+Figure of minimal perimeter:
+	Shape type is Rectangle
+	Outline color is aaaaaa
+	Fill color is 00aa00
+	Left top vertex is (100, 100)
+	width is 15
+	height is 75
+	Perimeter = 180
+	Area = 1125
+
