@@ -14,15 +14,27 @@ CRational::CRational(int value)
 {
 }
 
-int GCommDiv(int u, int v)
+CRational& CRational::Normalize()
 {
-	while (v != 0) {
-		int r = u % v;
-		u = v;
-		v = r;
+	if (m_numerator == 0)
+	{
+		m_denominator = 1;
+		return *this;
 	}
-	return u;
+	if (m_denominator < 0)
+	{
+		m_numerator = -m_numerator;
+		m_denominator = -m_denominator;
+	}
+	
+	int gcdNumDenom = std::gcd(std::abs(m_numerator), std::abs(m_denominator));
+	m_numerator /= gcdNumDenom;
+	m_denominator /= gcdNumDenom;
+	
+	return *this;
 }
+
+
 
 CRational::CRational(int numerator, int denominator)
 {
@@ -38,13 +50,9 @@ CRational::CRational(int numerator, int denominator)
 	}
 	else if (denominator == 0)
 	{
-		m_numerator = 0;
-		m_denominator = 1;
-		m_errorMess = "Zero denominator. Ratio is set to 0/1";
+		throw std::invalid_argument("Can't create ratio with zero in denominator!");
 	}
-	int factor = std::gcd(std::abs(m_numerator), std::abs(m_denominator));
-	m_numerator /= factor;
-	m_denominator /= factor;
+	Normalize();
 }
 
 
@@ -58,21 +66,10 @@ int CRational::GetDenominator() const
 	return m_denominator;
 }
 
-CRational& CRational::Normalize()
+double CRational::ToDouble() const
 {
-	if (m_numerator == 0)
-	{
-		m_denominator = 1;
-	}
-	else
-	{
-		int gcdNumDenom = std::gcd(std::abs(m_numerator), std::abs(m_denominator));
-		m_numerator /= gcdNumDenom;
-		m_denominator /= gcdNumDenom;
-	}
-	return *this;
+	return 1.0 * m_numerator / m_denominator;
 }
-
 
 
 CRational& CRational::operator+=(CRational summand)
@@ -110,11 +107,6 @@ CRational& CRational::operator/=(CRational divisor)
 	return Normalize();
 }
 
-
-std::string CRational::GetErrorMessage() const
-{
-	return m_errorMess;
-}
 
 CRational operator+(const CRational& ratio)
 {
@@ -158,7 +150,7 @@ bool operator!=(CRational left, CRational right)
 
 bool operator>(CRational left, CRational right)
 {
-	return (left.GetNumerator() * right.GetDenominator() > left.GetDenominator() * right.GetDenominator());
+	return (left.GetNumerator() * right.GetDenominator() > left.GetDenominator() * right.GetNumerator());
 }
 
 bool operator<(CRational left, CRational right)
@@ -175,3 +167,5 @@ bool operator<=(CRational left, CRational right)
 {
 	return !(left > right);
 }
+
+

@@ -16,14 +16,11 @@ class CRational
 		CRational& operator*=(CRational multiplier);
 		CRational& operator/=(CRational divisor);
 
-		std::string GetErrorMessage() const;
-
-		//double ToDouble() const;
+		double ToDouble() const;
 
 	private:
 		int m_numerator;
 		int m_denominator;
-		std::string m_errorMess;
 		CRational& Normalize();
 };
 
