@@ -4,16 +4,15 @@
 
 CRectangle::CRectangle(double leftTopX, double leftTopY, double width, double height, 
 	const std::string& outlineColor, const std::string& fillColor)
-	:ISolidShape("Rectangle", outlineColor, fillColor)
+	:m_type(std::string("Rectangle"))
+	,m_outlineColor(outlineColor)
+	,m_fillColor(fillColor)
 	,m_leftTop(CPoint(leftTopX, leftTopY))
 {
 	m_width = (width > 0) ? width : 0.0;
 	m_height = (height > 0) ? height : 0.0;
 }
 
-CRectangle::~CRectangle()
-{
-}
 
 double CRectangle::GetArea() const
 {
@@ -27,13 +26,13 @@ double CRectangle::GetPerimeter() const
 
 std::string CRectangle::GetOutlineColor() const
 {
-	return IShape::GetOutlineColor();
+	return m_outlineColor;
 }
 
 
 std::string CRectangle::GetFillcolor() const
 {
-	return ISolidShape::GetFillcolor();
+	return m_fillColor;
 }
 
 CPoint CRectangle::GetLeftTop() const
@@ -59,20 +58,20 @@ double CRectangle::GetHeight() const
 	return m_height;
 }
 
-void CRectangle::AppendProperties(std::ostream& ostrm) const
+
+std::string CRectangle::ToString() const
 {
-	ostrm << "\tLeft top vertex is (" << m_leftTop.GetX() << ", " << m_leftTop.GetY() << ")" << std::endl
+	std::ostringstream strm;
+
+	strm << "\tShape type is Rectangle" << std::endl
+		<< "\tOutline color is " << m_outlineColor << std::endl
+		<< "\tFill color is " << m_fillColor << std::endl
+		<< "\tLeft top vertex is (" << m_leftTop.GetX() << ", " << m_leftTop.GetY() << ")" << std::endl
 		<< "\twidth is " << m_width << std::endl
 		<< "\theight is " << m_height << std::endl
 		<< "\tPerimeter =  " << GetPerimeter() << std::endl
 		<< "\tArea = " << GetArea() << std::endl;
-}
 
-std::string CRectangle::ToString() const
-{
-	ISolidShape::ToString();
-	std::ostringstream strm;
-	AppendProperties(strm);
 	return strm.str();
 }
 

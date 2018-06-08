@@ -47,9 +47,6 @@ CRational::CRational(int numerator, int denominator)
 	m_denominator /= factor;
 }
 
-CRational::~CRational()
-{
-}
 
 int CRational::GetNumerator() const
 {
@@ -76,15 +73,7 @@ CRational& CRational::Normalize()
 	return *this;
 }
 
-CRational CRational::operator+(const CRational& ratio)
-{
-	return ratio;
-}
 
-CRational CRational::operator-(const CRational& ratio)
-{
-	return CRational(- ratio.GetNumerator(), ratio.*this;
-}
 
 CRational& CRational::operator+=(CRational summand)
 {
@@ -107,10 +96,34 @@ CRational& CRational::operator*=(CRational multiplier)
 	return Normalize();
 }
 
+CRational& CRational::operator/=(CRational divisor)
+{
+	if (divisor.m_numerator == 0)
+	{
+		throw std::invalid_argument("Zero division attempt!");
+	}
+	else
+	{
+		m_numerator = m_numerator * divisor.m_denominator;
+		m_denominator = m_denominator * divisor.m_numerator;
+	}
+	return Normalize();
+}
+
 
 std::string CRational::GetErrorMessage() const
 {
 	return m_errorMess;
+}
+
+CRational operator+(const CRational& ratio)
+{
+	return ratio;
+}
+
+CRational operator-(const CRational& ratio)
+{
+	return CRational(-ratio.GetNumerator(), ratio.GetDenominator());
 }
 
 CRational operator+(CRational summand1, CRational summand2)
@@ -126,6 +139,11 @@ CRational operator-(CRational minuend, CRational subtrahend)
 CRational operator*(CRational multiplier1, CRational multiplier2)
 {
 	return multiplier1 *= multiplier2;
+}
+
+CRational operator/(CRational dividend, CRational divisor)
+{
+	return dividend /= divisor;
 }
 
 bool operator==(CRational left, CRational right)

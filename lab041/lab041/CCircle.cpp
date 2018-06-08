@@ -2,8 +2,11 @@
 #include "CCircle.h"
 
 
-CCircle::CCircle(double centerX, double centerY, double radius, const std::string& outlineColor, const std::string& fillColor)
-	:ISolidShape("Circle", outlineColor, fillColor)
+CCircle::CCircle(double centerX, double centerY, double radius, 
+	const std::string& outlineColor, const std::string& fillColor)
+	:m_type(std::string("Circle"))
+	,m_outlineColor(outlineColor)
+	,m_fillColor(fillColor)
 	,m_center(CPoint(centerX, centerY))
 {
 	m_radius = (radius > 0) ? radius : 0.0;
@@ -22,12 +25,12 @@ double CCircle::GetPerimeter() const
 
 std::string CCircle::GetOutlineColor() const
 {
-	return IShape::GetOutlineColor();
+	return m_outlineColor;
 }
 
 std::string CCircle::GetFillcolor() const
 {
-	return ISolidShape::GetFillcolor();
+	return m_fillColor;
 }
 
 
@@ -41,19 +44,18 @@ double CCircle::GetRadius() const
 	return m_radius;
 }
 
-void CCircle::AppendProperties(std::ostream& ostrm) const
+std::string CCircle::ToString() const
 {
-	ostrm << "\tcenter is at point (" << m_center.GetX() << ", " << m_center.GetY() << ")" << std::endl
+	std::ostringstream strm;
+
+	strm << "\tShape type is Circle" << std::endl
+		<< "\tOutline color is " << m_outlineColor << std::endl
+		<< "\tFill color is " << m_fillColor << std::endl
+		<< "\tcenter is at point (" << m_center.GetX() << ", " << m_center.GetY() << ")" << std::endl
 		<< "\tradius is " << m_radius << std::endl
 		<< "\tPerimeter =  " << GetPerimeter() << std::endl
 		<< "\tArea = " << GetArea() << std::endl;
-}
-
-std::string CCircle::ToString() const
-{
-	ISolidShape::ToString();
-	std::ostringstream strm;
-	AppendProperties(strm);
+	
 	return strm.str();
 }
 

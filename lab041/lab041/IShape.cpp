@@ -18,28 +18,12 @@ double CPoint::GetY() const
 	return m_y;
 }
 
-IShape::IShape(const std::string& type = "LineSegment", const std::string& outlineColor = "ff0000")
-	:m_type(type)
-	,m_outlineColor(outlineColor)
-{
-}
 
-IShape::~IShape()
-{
-}
 
-std::string IShape::GetOutlineColor() const
-{
-	return m_outlineColor;
-}
 
-std::string IShape::ToString() const
-{
-	std::ostringstream sstrm;
-	sstrm << m_type << ":" << std::endl << "\tOutline Color is " << GetOutlineColor() << std::endl;
-	AppendProperties(sstrm);
-	return sstrm.str();
-}
+
+
+
 
 
 
