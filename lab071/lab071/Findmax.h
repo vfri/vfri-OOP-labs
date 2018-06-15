@@ -25,21 +25,29 @@ public:
 template < typename T, class Comp>
 bool FindMax(std::vector<T> const& arr, T& maxValue, Comp const& comp)
 {
-	if (arr.empty())
+	try
 	{
-		return false;
-	}
-	
-	T max = arr[0];
+		if (arr.empty())
+		{
+			return false;
+		}
 
-	for (size_t i = 0; i < arr.size(); ++i)
+		T max = arr[0];
+
+		for (size_t i = 0; i < arr.size(); ++i)
+		{
+			if (comp.GreaterThan(arr[i], max)) 	max = arr[i];
+		}
+
+		maxValue = max;
+
+		return true;
+	}
+	catch (...)
 	{
-		if (comp.GreaterThan(arr[i], max)) 	max = arr[i];
+		throw;
 	}
-
-	maxValue =  max;
-
-	return true;
+	return false;
 }
 
 template <typename T>
