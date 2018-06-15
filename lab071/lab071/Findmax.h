@@ -1,8 +1,29 @@
 #pragma once
 #include "stdafx.h"
 
-template < typename T >
-bool FindMax(std::vector<T> const& arr, T& maxValue)
+template <typename T> 
+class CComparator 
+{ 
+public: 
+	bool GreaterThan(T const& a, T const& b) const
+	{ 
+		return a > b; 
+	} 
+}; 
+
+template <> 
+class CComparator<const char *> 
+{ 
+public: 
+	bool GreaterThan(const char * const& a, const char * const& b) const 
+	{ 
+		return strcmp(a, b) > 0; 
+	} 
+};
+
+
+template < typename T, class Comp>
+bool FindMax(std::vector<T> const& arr, T& maxValue, Comp const& comp)
 {
 	if (arr.empty())
 	{
@@ -10,16 +31,10 @@ bool FindMax(std::vector<T> const& arr, T& maxValue)
 	}
 	
 	T max = arr[0];
-	
+
 	for (size_t i = 0; i < arr.size(); ++i)
 	{
-		std::cout << arr[i] << " vs " << max << std::endl;
-		if (arr[i] > max)
-		{
-			max = arr[i];
-			std::cout << "New max\n";
-		}
-
+		if (comp.GreaterThan(arr[i], max)) 	max = arr[i];
 	}
 
 	maxValue =  max;
@@ -27,28 +42,19 @@ bool FindMax(std::vector<T> const& arr, T& maxValue)
 	return true;
 }
 
-template <>
-bool FindMax<const char*>(std::vector<const char*> const& arr, 	const char * & maxValue)
+template <typename T>
+void FindAndPrintMax(std::vector<T> const& arr)
 {
-	if (arr.empty())
+	T max;
+	std::cout << "\n";
+	std::copy(arr.begin(), arr.end(), std::ostream_iterator<T>(std::cout, " "));
+	std::cout << "\n";
+	if (FindMax(arr, max, CComparator<T>()))
 	{
-		return false;
+		std::cout << "Maximal element is " << max << std::endl;
 	}
-
-	const char* max = arr[0];
-
-	for (size_t i = 0; i < arr.size(); ++i)
+	else
 	{
-		std::cout << arr[i] << " vs " << max << std::endl;
-		if (strcmp(arr[i], max) > 0)
-		{
-			max = arr[i];
-			std::cout << "New max\n";
-		}
-
+		std::cout << "Vector is empty!" << std::endl;
 	}
-
-	maxValue = max;
-
-	return true;
 }
