@@ -10,11 +10,12 @@ class CRational
 		int GetNumerator() const;
 		int GetDenominator() const;
 		
-		
-		CRational& operator+=(CRational summand);
-		CRational& operator-=(CRational subtrahend);
-		CRational& operator*=(CRational multiplier);
-		CRational& operator/=(CRational divisor);
+		CRational& operator+=(CRational const& summand);
+		CRational& operator-=(CRational const& subtrahend);
+		CRational& operator*=(CRational const& multiplier);
+		CRational& operator/=(CRational const& divisor);
+
+		//CRational& operator+=(CRational summand); такая сигнатура была раньше
 
 		double ToDouble() const;
 
@@ -38,5 +39,7 @@ bool operator<(CRational left, CRational right);
 bool operator>=(CRational left, CRational right);
 bool operator<=(CRational left, CRational right);
 
+std::ostream& operator<<(std::ostream& ostrm, CRational const& ratio);
+std::istream& operator>>(std::istream& istrm, CRational& ratio);
 
 

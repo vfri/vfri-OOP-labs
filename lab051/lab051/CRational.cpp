@@ -72,28 +72,53 @@ double CRational::ToDouble() const
 }
 
 
-CRational& CRational::operator+=(CRational summand)
+CRational& CRational::operator+=(CRational const& summand)
 {
-	m_numerator = m_numerator * summand.m_denominator + m_denominator * summand.m_numerator;
-	m_denominator = m_denominator * summand.m_denominator;
+	if (&summand != this)
+	{
+		m_numerator = m_numerator * summand.m_denominator + m_denominator * summand.m_numerator;
+		m_denominator = m_denominator * summand.m_denominator;
+	}
+	else
+	{
+		m_numerator = 2 * m_numerator;
+	}
+	
 	return Normalize();
 }
 
-CRational& CRational::operator-=(CRational subtrahend)
+CRational& CRational::operator-=(CRational const& subtrahend)
 {
-	m_numerator = m_numerator * subtrahend.m_denominator - m_denominator * subtrahend.m_numerator;
-	m_denominator = m_denominator * subtrahend.m_denominator;
+	if (&subtrahend != this)
+	{
+		m_numerator = m_numerator * subtrahend.m_denominator - m_denominator * subtrahend.m_numerator;
+		m_denominator = m_denominator * subtrahend.m_denominator;
+	}
+	else
+	{
+		m_numerator = 0;
+	}
+
 	return Normalize();
 }
 
-CRational& CRational::operator*=(CRational multiplier)
+CRational& CRational::operator*=(CRational const& multiplier)
 {
-	m_numerator *= multiplier.m_numerator;
-	m_denominator *= multiplier.m_denominator;
+	if (&multiplier != this)
+	{
+		m_numerator *= multiplier.m_numerator;
+		m_denominator *= multiplier.m_denominator;
+	}
+	else
+	{
+		m_numerator = m_numerator * m_numerator;
+		m_denominator = m_denominator * m_denominator;
+	}
+
 	return Normalize();
 }
 
-CRational& CRational::operator/=(CRational divisor)
+CRational& CRational::operator/=(CRational const& divisor)
 {
 	if (divisor.m_numerator == 0)
 	{
@@ -101,8 +126,16 @@ CRational& CRational::operator/=(CRational divisor)
 	}
 	else
 	{
-		m_numerator = m_numerator * divisor.m_denominator;
-		m_denominator = m_denominator * divisor.m_numerator;
+		if (&divisor != this)
+		{
+			m_numerator = m_numerator * divisor.m_denominator;
+			m_denominator = m_denominator * divisor.m_numerator;
+		}
+		else
+		{
+			m_numerator = 1;
+			m_denominator = 1;
+		}
 	}
 	return Normalize();
 }
@@ -168,4 +201,64 @@ bool operator<=(CRational left, CRational right)
 	return !(left > right);
 }
 
+
+std::ostream& operator<<(std::ostream& ostrm, CRational const& ratio)
+{
+	ostrm << ratio.GetNumerator();
+	if (ratio.GetDenominator() != 1)
+	{
+		ostrm << "/" << ratio.GetDenominator();
+	}
+	return ostrm;
+}
+
+std::istream& operator>>(std::istream& istrm, CRational& ratio)
+{
+	int numerator = 0;
+	int denominator = 1;
+	if ((istrm >> numerator) &&	(istrm.get() == '/') && (istrm >> denominator))
+	{
+		ratio = CRational(numerator, denominator);
+		return istrm;
+	}
+	return istrm;
+}
+
+
+/*
+CRational& CRational::operator+=(CRational summand)
+{
+m_numerator = m_numerator * summand.m_denominator + m_denominator * summand.m_numerator;
+m_denominator = m_denominator * summand.m_denominator;
+return Normalize();
+}
+
+CRational& CRational::operator-=(CRational subtrahend)
+{
+m_numerator = m_numerator * subtrahend.m_denominator - m_denominator * subtrahend.m_numerator;
+m_denominator = m_denominator * subtrahend.m_denominator;
+return Normalize();
+}
+
+CRational& CRational::operator*=(CRational multiplier)
+{
+m_numerator *= multiplier.m_numerator;
+m_denominator *= multiplier.m_denominator;
+return Normalize();
+}
+
+CRational& CRational::operator/=(CRational divisor)
+{
+if (divisor.m_numerator == 0)
+{
+throw std::invalid_argument("Zero division attempt!");
+}
+else
+{
+m_numerator = m_numerator * divisor.m_denominator;
+m_denominator = m_denominator * divisor.m_numerator;
+}
+return Normalize();
+}
+*/
 
