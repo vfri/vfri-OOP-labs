@@ -1,10 +1,11 @@
 #pragma once
 #include "ISolidShape.h"
+#include "CPoint.h"
 
 class CCircle : public ISolidShape
 {
 public:
-	CCircle(double centerX, double centerY, double radius, 
+	CCircle(CPoint const& center, double radius, 
 		const std::string& outlineColor, const std::string& fillColor);
 	double GetArea() const; // площадь образа
 	double GetPerimeter() const; // периметр образа

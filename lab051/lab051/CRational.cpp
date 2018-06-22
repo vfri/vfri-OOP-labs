@@ -74,47 +74,29 @@ double CRational::ToDouble() const
 
 CRational& CRational::operator+=(CRational const& summand)
 {
-	if (&summand != this)
-	{
-		m_numerator = m_numerator * summand.m_denominator + m_denominator * summand.m_numerator;
-		m_denominator = m_denominator * summand.m_denominator;
-	}
-	else
-	{
-		m_numerator = 2 * m_numerator;
-	}
+	int oldDenom = m_denominator;
+	int summDenom = summand.m_denominator;
+	m_denominator = oldDenom * summDenom;
+	m_numerator = m_numerator * summDenom + oldDenom * summand.m_numerator;
 	
 	return Normalize();
 }
 
 CRational& CRational::operator-=(CRational const& subtrahend)
 {
-	if (&subtrahend != this)
-	{
-		m_numerator = m_numerator * subtrahend.m_denominator - m_denominator * subtrahend.m_numerator;
-		m_denominator = m_denominator * subtrahend.m_denominator;
-	}
-	else
-	{
-		m_numerator = 0;
-	}
-
+	int oldDenom = m_denominator;
+	int subtDenom = subtrahend.m_denominator;
+	m_denominator = oldDenom * subtDenom;
+	m_numerator = m_numerator * subtDenom - oldDenom * subtrahend.m_numerator;
+	
 	return Normalize();
 }
 
 CRational& CRational::operator*=(CRational const& multiplier)
 {
-	if (&multiplier != this)
-	{
 		m_numerator *= multiplier.m_numerator;
 		m_denominator *= multiplier.m_denominator;
-	}
-	else
-	{
-		m_numerator = m_numerator * m_numerator;
-		m_denominator = m_denominator * m_denominator;
-	}
-
+	
 	return Normalize();
 }
 
@@ -126,16 +108,9 @@ CRational& CRational::operator/=(CRational const& divisor)
 	}
 	else
 	{
-		if (&divisor != this)
-		{
+			int newDenom = m_denominator * divisor.m_numerator;
 			m_numerator = m_numerator * divisor.m_denominator;
-			m_denominator = m_denominator * divisor.m_numerator;
-		}
-		else
-		{
-			m_numerator = 1;
-			m_denominator = 1;
-		}
+			m_denominator = newDenom;
 	}
 	return Normalize();
 }
@@ -219,7 +194,6 @@ std::istream& operator>>(std::istream& istrm, CRational& ratio)
 	if ((istrm >> numerator) &&	(istrm.get() == '/') && (istrm >> denominator))
 	{
 		ratio = CRational(numerator, denominator);
-		return istrm;
 	}
 	return istrm;
 }

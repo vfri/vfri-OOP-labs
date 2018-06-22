@@ -4,14 +4,14 @@
 
 
 
-CTriangle::CTriangle(double vert1X, double vert1Y, double vert2X, double vert2Y, double vert3X, double vert3Y,
+CTriangle::CTriangle(CPoint const& vert1, CPoint const& vert2, CPoint const& vert3,
 	const std::string& outlineColor, const std::string& fillColor)
 	:m_type(std::string("Triangle"))
 	,m_outlineColor(outlineColor)
 	,m_fillColor(fillColor)
-	,m_vert1(CPoint(vert1X, vert1Y))
-	,m_vert2(CPoint(vert2X, vert2Y))
-	,m_vert3(CPoint(vert3X, vert3Y))
+	,m_vert1(vert1)
+	,m_vert2(vert2)
+	,m_vert3(vert3)
 {
 }
 
@@ -42,17 +42,13 @@ std::string CTriangle::GetFillcolor() const
 
 double CTriangle::GetPerimeter() const
 {
-	CLineSegment side1(m_vert1.GetX(), m_vert1.GetY(), m_vert2.GetX(), m_vert2.GetY(), m_outlineColor);
-	CLineSegment side2(m_vert2.GetX(), m_vert2.GetY(), m_vert3.GetX(), m_vert3.GetY(), m_outlineColor);
-	CLineSegment side3(m_vert3.GetX(), m_vert3.GetY(), m_vert1.GetX(), m_vert1.GetY(), m_outlineColor);
-
-	return side1.GetPerimeter() + side2.GetPerimeter() + side3.GetPerimeter();
+	return CalcDistance(m_vert1, m_vert2) + CalcDistance(m_vert2, m_vert3) + CalcDistance(m_vert3, m_vert1);
 }
 
 double CTriangle::GetArea() const
 {
-	CLineSegment side2(m_vert1.GetX(), m_vert1.GetY(), m_vert2.GetX(), m_vert2.GetY(), m_outlineColor);
-	CLineSegment side3(m_vert1.GetX(), m_vert1.GetY(), m_vert3.GetX(), m_vert3.GetY(), m_outlineColor);
+	CLineSegment side2(m_vert1, m_vert2, "");
+	CLineSegment side3(m_vert1, m_vert3, "");
 	CPoint side2Rad = side2.GetRadVector();
 	CPoint side3Rad = side3.GetRadVector();
 

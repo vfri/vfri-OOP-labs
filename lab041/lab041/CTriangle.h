@@ -1,10 +1,11 @@
 #pragma once
 #include "ISolidShape.h"
+#include "CPoint.h"
 
 class CTriangle : public ISolidShape 
 {
 public:
-	CTriangle(double vert1X, double vert1Y, double vert2X, double vert2Y, double vert3X, double vert3Y,
+	CTriangle(CPoint const& vert1, CPoint const& vert2, CPoint const& vert3,
 	const std::string& outlineColor, const std::string& fillColor);
 	double GetArea() const; // площадь образа
 	double GetPerimeter() const; // периметр образа

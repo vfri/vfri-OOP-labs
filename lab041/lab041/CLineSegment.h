@@ -1,10 +1,11 @@
 #pragma once
 #include "IShape.h"
+#include "CPoint.h"
 
 class CLineSegment : public IShape
 {
 public:
-	CLineSegment(double startPointX, double startPointY, double endPointX, double endPointY, 
+	CLineSegment(CPoint const& startPoint, CPoint const& endPointY, 
 		const std::string& outlineColor);
 	double GetArea() const;
 	double GetPerimeter() const;

@@ -2,12 +2,12 @@
 #include "CCircle.h"
 
 
-CCircle::CCircle(double centerX, double centerY, double radius, 
+CCircle::CCircle(CPoint const& center, double radius, 
 	const std::string& outlineColor, const std::string& fillColor)
 	:m_type(std::string("Circle"))
 	,m_outlineColor(outlineColor)
 	,m_fillColor(fillColor)
-	,m_center(CPoint(centerX, centerY))
+	,m_center(center)
 {
 	m_radius = (radius > 0) ? radius : 0.0;
 }
