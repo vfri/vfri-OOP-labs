@@ -23,31 +23,23 @@ public:
 
 
 template < typename T, class Comp>
-bool FindMax(std::vector<T> const& arr, T& maxValue, Comp const& comp)
+bool FindMaxEx(std::vector<T> const& arr, T& maxValue, Comp const& comp)
 {
-	try
+	if (arr.empty())
 	{
-		if (arr.empty())
-		{
-			return false;
-		}
-
-		T max = arr[0];
-
-		for (size_t i = 0; i < arr.size(); ++i)
-		{
-			if (comp.GreaterThan(arr[i], max)) 	max = arr[i];
-		}
-
-		maxValue = max;
-
-		return true;
+		return false;
 	}
-	catch (...)
+	
+	auto maxIt = arr.begin();
+	
+	for (auto it = arr.begin(); it != arr.end(); ++it)
 	{
-		throw;
+		if (comp.GreaterThan(*it, *maxIt)) maxIt = it;
 	}
-	return false;
+
+	maxValue = *maxIt;
+
+	return true;
 }
 
 template <typename T>
@@ -57,7 +49,7 @@ void FindAndPrintMax(std::vector<T> const& arr)
 	std::cout << "\n";
 	std::copy(arr.begin(), arr.end(), std::ostream_iterator<T>(std::cout, " "));
 	std::cout << "\n";
-	if (FindMax(arr, max, CComparator<T>()))
+	if (FindMaxEx(arr, max, CComparator<T>()))
 	{
 		std::cout << "Maximal element is " << max << std::endl;
 	}

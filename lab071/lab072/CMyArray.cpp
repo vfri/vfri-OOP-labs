@@ -2,11 +2,5 @@
 #include "CMyArray.h"
 
 
-CMyArray::CMyArray()
-{
-}
 
 
-CMyArray::~CMyArray()
-{
-}
