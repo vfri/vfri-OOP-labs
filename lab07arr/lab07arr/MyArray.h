@@ -947,7 +947,7 @@ namespace arrayenv
 		{
 			vector_data data;
 			if (m_impl.max_capacity() < new_capacity) {
-				throw std::length_error("vector::reserve: invalid size");
+				throw std::length_error("CMyArray::reserve: invalid size");
 			}
 			if (m_impl.capacity() < new_capacity) {
 				m_impl.create_storage_to(data, new_capacity);
